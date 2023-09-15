@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls';
 
 const init = () => {
     // Канвас
@@ -15,49 +16,35 @@ const init = () => {
 		height: window.innerHeight,
 	};
 
-    const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height);
-    const cameraDistance = 2000; // Расстояние между камерой и землей
-    camera.position.set(0, 0, cameraDistance);
+    // Взгляд камеры на землю
+    const camera = new THREE.PerspectiveCamera(60, sizes.width / sizes.height, 1, 50000);
+    camera.position.set(4000, 1500, -4000);
+    scene.add(camera);
 
-    // camera.position.set(0, -1000, 1000);
-    // camera.lookAt(0, 0, 0); 
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
 
-    // const cameraHeight = 500;
-    // camera.position.set(0, -cameraHeight, cameraHeight);
-
-    const cameraTarget = new THREE.Vector3(0, 0, 0); 
-    camera.lookAt(cameraTarget);
-
-    // Основной код
-	scene.add(camera);
-
-	const controls = new OrbitControls(camera, canvas);
-	controls.enableDamping = true;
-
-	const renderer = new THREE.WebGLRenderer({ canvas });
-	renderer.setSize(sizes.width, sizes.height);
-	// renderer.render(scene, camera);
+    const renderer = new THREE.WebGLRenderer({ canvas });
+    renderer.setSize(sizes.width, sizes.height);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
 
     const textureLoader = new THREE.TextureLoader();
-    const grassTexture = textureLoader.load('grass-texture.jpg');
-    grassTexture.wrapS = THREE.RepeatWrapping;
-    grassTexture.wrapT = THREE.RepeatWrapping;
-    grassTexture.repeat.set(10, 10); 
 
-    const groundGeometry = new THREE.PlaneGeometry(10000, 10000);
-    const groundMaterial = new THREE.MeshBasicMaterial({ map: grassTexture });
+    // Контроллер от первого лица
+    const fpControls = new FirstPersonControls(camera, canvas);
+    fpControls.lookSpeed = 0.05; 
+    fpControls.movementSpeed = 3000; 
+    fpControls.noFly = true; 
+    fpControls.lookVertical = true; 
+    controls.autoForward = false;
 
-    const ground = new THREE.Mesh(groundGeometry, groundMaterial);
-    scene.add(ground);
+    const clock = new THREE.Clock();
 
-    
-
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(1, 1, 1);
-    scene.add(directionalLight);
-
+    // Анимация
     const animate = () => {
-        controls.update();
+        fpControls.update(clock.getDelta()); 
+        // controls.update();
 
         renderer.render(scene, camera);
 
@@ -66,7 +53,15 @@ const init = () => {
 
     animate();
 
-	return { sizes, scene, canvas, camera, renderer, controls };
+	return { 
+        sizes, 
+        scene, 
+        canvas, 
+        camera,
+        renderer, 
+        controls, 
+        textureLoader, 
+};
 };
 
 export default init;

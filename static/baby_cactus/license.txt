@@ -1,0 +1,11 @@
+Model Information:
+* title:	Baby Cactus!
+* source:	https://sketchfab.com/3d-models/baby-cactus-2a403b03dbf64f1fb34cf35a295ba8b6
+* author:	pixipui (https://sketchfab.com/pixipui)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Baby Cactus!" (https://sketchfab.com/3d-models/baby-cactus-2a403b03dbf64f1fb34cf35a295ba8b6) by pixipui (https://sketchfab.com/pixipui) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
